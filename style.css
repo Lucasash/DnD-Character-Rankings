@@ -1,0 +1,39 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+label {
+    margin-bottom: 20px;
+}
+.container {
+    display: flex;
+    justify-content: space-between; /* Distributes space between the characters */
+    align-items: flex-start; /* Aligns items at the start of the cross axis */
+    margin-bottom: 100px; /* Adds a 100px margin between character 1 and character 2 */
+}
+
+.character {
+    flex: 1;
+    text-align: center;
+}
+
+.character img {
+    max-height: 500px; /* Adjust the maximum height of the images as needed */
+    width: auto;
+    display: block; /* Ensures the image is displayed as a block element */
+    margin: 0 auto; /* Centers the image horizontally */
+}
+
+.character label {
+    display: block; /* Displays labels as block elements */
+    margin-top: 10px; /* Adjust the top margin between the image and the label */
+}
+
+img {
+    width: auto;
+    height: 500px;
+    margin-bottom: 10px;
+}

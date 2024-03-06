@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Voting</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script>
+        function submitVote(chosenCharacterId, otherCharacterId) {
+            document.getElementById('chosenCharacter').value = chosenCharacterId;
+            document.getElementById('otherCharacter').value = otherCharacterId;
+            document.getElementById('characterForm').submit();
+        }
+    </script>
+</head>
+<body>
+    <h1>Character Voting</h1>
+    <form id="characterForm" action="/" method="POST">
+        <div class="container">
+            <div class="character">
+                <a href="#" onclick="submitVote('{character1_id}', '{character2_id}'); return false;">
+                    <img src="{character1_url}" alt="{character1_name}">
+                </a>
+                <label for="character1">{character1_name}</label>
+            </div>
+            <div class="character">
+                <a href="#" onclick="submitVote('{character2_id}', '{character1_id}'); return false;">
+                    <img src="{character2_url}" alt="{character2_name}">
+                </a>
+                <label for="character2">{character2_name}</label>
+            </div>
+        </div>
+        <!-- Hidden input field to store selected character IDs -->
+        <input type="hidden" id="chosenCharacter" name="chosenCharacter">
+        <input type="hidden" id="otherCharacter" name="otherCharacter">
+    </form>
+</body>
+</html>
