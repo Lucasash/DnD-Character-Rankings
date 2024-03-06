@@ -1,6 +1,7 @@
 import psycopg2
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import parse_qs
+import os
 
 # Connect to PostgreSQL
 conn = psycopg2.connect(
@@ -10,10 +11,14 @@ conn = psycopg2.connect(
     host="127.0.0.1",
     port="5432" 
 )
+
+script_path = os.path.abspath(__file__)
+script_directory = os.path.dirname(script_path) + "\\"
+
 def format_html(character1_id, character1_name, character1_url,
-    character2_id, character2_name, character2_url):
+                character2_id, character2_name, character2_url, rows):
     # Read the HTML content from the file
-    with open('index.html', 'r') as file:
+    with open((script_directory + 'index.html'), 'r') as file:
         html_content = file.read()
 
     # Find the position where the <body> tag starts
@@ -24,19 +29,25 @@ def format_html(character1_id, character1_name, character1_url,
     body = html_content[body_start_index:]
 
     # Format the body section with the character data
+    formatted_images = ''
+    formatted_images = ''.join([f'<img src="{image}" alt="{name}">' for name, votes, image in rows])
+    #formatted_images = ''.join([f'<img src="{image}" alt="Image"> Votes: {votes}' for name, votes, image in rows])
+
     formatted_body = body.format(
         character1_id=character1_id,
         character1_name=character1_name,
         character1_url=character1_url,
         character2_id=character2_id,
         character2_name=character2_name,
-        character2_url=character2_url
+        character2_url=character2_url,
+        images=formatted_images
     )
 
     # Recombine the header and formatted body sections
     formatted_html = header + formatted_body
 
     return formatted_html
+
 
 # Create a cursor object to perform database operations
 cur = conn.cursor()
@@ -49,13 +60,13 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         
     def do_GET(self):
-        if self.path == '/style.css':
+        if self.path == '/style.css':  # Check for the correct path
             # Serve CSS file
             self.send_response(200)
-            self.send_header('Content-type', 'text/css')
+            self.send_header('Content-type', 'text/css')  # Set the correct MIME type
             self.end_headers()
 
-            with open('style.css', 'rb') as file:
+            with open((script_directory + 'style.css'), 'rb') as file:
                 css_content = file.read()
 
             self.wfile.write(css_content)
@@ -71,13 +82,16 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         character1_id, character1_name, character1_url = characters[0]
         character2_id, character2_name, character2_url = characters[1]
+
+        cur.execute("SELECT cv.character_name, cv.votes, cl.image_url FROM Character_votes cv JOIN characters_list cl ON cv.character_name = cl.name ORDER BY cv.votes DESC;")
+        rows = cur.fetchall()
     
         # Read HTML content from the HTML file
-        with open('index.html', 'r') as file:
+        with open((script_directory + 'index.html'), 'r') as file:
             response_content = file.read()
 
         # Replace placeholders in HTML content with actual values
-        response_content = format_html(character1_id, character1_name, character1_url, character2_id, character2_name, character2_url)
+        response_content = format_html(character1_id, character1_name, character1_url, character2_id, character2_name, character2_url,rows)
         
         self.wfile.write(response_content.encode('utf-8'))
 

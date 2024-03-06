@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Voting</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
     <script>
         function submitVote(chosenCharacterId, otherCharacterId) {
             document.getElementById('chosenCharacter').value = chosenCharacterId;
             document.getElementById('otherCharacter').value = otherCharacterId;
             document.getElementById('characterForm').submit();
         }
-    </script>
+        </script>
 </head>
 <body>
-    <h1>Character Voting</h1>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <form id="characterForm" action="/" method="POST">
-        <div class="container">
+        <div class="choices">
             <div class="character">
                 <a href="#" onclick="submitVote('{character1_id}', '{character2_id}'); return false;">
                     <img src="{character1_url}" alt="{character1_name}">
@@ -34,5 +33,8 @@
         <input type="hidden" id="chosenCharacter" name="chosenCharacter">
         <input type="hidden" id="otherCharacter" name="otherCharacter">
     </form>
+    <div class="rankings">
+        {images}
+    </div>
 </body>
 </html>

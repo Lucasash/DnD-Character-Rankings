@@ -8,7 +8,7 @@ body {
 label {
     margin-bottom: 20px;
 }
-.container {
+.choices {
     display: flex;
     justify-content: space-between; /* Distributes space between the characters */
     align-items: flex-start; /* Aligns items at the start of the cross axis */
@@ -37,3 +37,16 @@ img {
     height: 500px;
     margin-bottom: 10px;
 }
+.rankings {
+    white-space: nowrap;
+    overflow-x: auto;
+    width: 90%; /* Fill 90% of the horizontal width */
+    margin: 0 auto; /* Center the image container horizontally */
+}
+
+.rankings img {
+    height: 150px;; /* Adjust image width as needed */
+    margin-right: 10px; /* Adjust margin between images */
+
+}
+
